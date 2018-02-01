@@ -1,22 +1,33 @@
    <?php
     
         require_once './cabeza.php';
+        require_once '../modelos/conexion.php';
+        
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['login_user'])) { //not logged in
+
+            //redirect to homepage
+            header("Location: ../index.php");
+            die();
+
+        }
     ?>
 
   <ul id="slide-out" class="side-nav fixed">
     <li><div class="user-view">
-      <div class="background">
-        <img src="images/office.jpg">
+      <div>
+        <img src="../resources/img/logo.PNG" alt=""/>
       </div>
-      <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
-      <a href="#!name"><span class="white-text name">John Doe</span></a>
-      <a href="#!email"><span class="white-text email">jdandturk@gmail.com</span></a>
+     
     </div></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
-    <li><a href="#!">Second Link</a></li>
+    <li><a href="#!"><i class="material-icons">menu</i>Menú</a></li>
+    
     <li><div class="divider"></div></li>
-    <li><a class="subheader">Subheader</a></li>
-    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    <li><a class="subheader"><i class="material-icons">home</i>Inicio</a></li>
+    <li><a class="waves-effect"><i class="material-icons">assignment</i>Reportes</a></li>
   </ul>
   <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
 
@@ -30,115 +41,70 @@
             <h2 class="center light-blue-text"><i class="material-icons">view_list</i></h2>
             <h5 class="center">Listado de Libros en venta</h5>
             
+            <a class="btn-floating btn-large waves-effect waves-light red" href="agregar.php"><i class="material-icons">add</i></a>
             <table id="listaLibros" cellspacing="0" width="100%" class="striped highlight centered responsive-table display">
                 <thead>
                   <tr>
-                      <th>Name</th>
-                      <th>Item Name</th>
-                      <th>Item Price</th>
+                      <th>Id</th>
+                      <th>Título</th>
+                      <th>Autor</th>
+                      <th>Editorial</th>
+                      <th>Año Públicación</th>
+                      <th>Formato</th>
+                      <th>Categoria</th>
+                      <th>Precio</th>
+                      <th>Cantidad Stock</th>
+                      <th>Acciones</th>
                   </tr>
-                </thead>
-                
+                </thead>  
 
                 <tbody>
-                  <tr>
-                    <td>Alvin</td>
-                    <td>Eclair</td>
-                    <td>$0.87</td>
-                  </tr>
-                  <tr>
-                    <td>Alan</td>
-                    <td>Jellybean</td>
-                    <td>$3.76</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr><tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr><tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr><tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr><tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
-                  <tr>
-                    <td>Jonathan</td>
-                    <td>Lollipop</td>
-                    <td>$7.00</td>
-                  </tr>
+                <?php
                   
+                  $sql = "SELECT l.id, f.formato,c.categoria,l.titulo,l.autor,l.editorial,l.aniopublicacion,l.precio,l.cantidadstock FROM libros l left join categorias c on c.id=l.idcategoria left join formatos f on f.id=l.idformato;";
+                  $resultado = mysqli_query($mysqli,$sql);
                   
-                  
-                  
-                  
-                  
+                  if($resultado)
+                    {
+
+                       while($row = mysqli_fetch_array($resultado))
+                        {
+
+                           echo '<tr><td align="left">' .
+                                    $row['id'] . '</td><td align="left">' .
+                                    $row['titulo'].  '</td><td align="left">' .
+                                    $row['autor'] . '</td><td align="left">'.
+                                    $row['editorial'] . '</td><td align="left">'.
+                                    $row['aniopublicacion'].  '</td><td align="left">'.
+                                    $row['formato'].  '</td><td align="left">'.
+                                    $row['categoria'].  '</td><td align="left">'.
+                                    $row['precio'].  '</td><td align="left">'.
+                                    $row['cantidadstock']. 
+                                    "<td><a href=\"modificar.php?id=$row[id]\">Modificar</a> | <a href=\"../controladores/ControladorBorrar.php?id=$row[id]\" onClick=\"return confirm('Esta seguro que quiere borrar este libro?')\">Borrar</a></td>"
+                                   ;
+
+
+                           echo '</tr>';
+                        }
+
+                      }
+                    else
+                    {
+                        echo "no se puedo ejecutar la consulta hay un error en la base de datos<br />";
+                        echo mysqli_error($mysqli);
+                    }
+                    
+                      //mysql_close($mysqli);
+                 ?>                         
                 
                 </tbody>
-              </table>
-          
+              </table>          
           </div>
-        </div>
-       
+        </div>       
       </div>
-
     </div>
-    <br><br>
+    <br>
+    <br>
   </div>
 
  <div class="row hide">
