@@ -1,4 +1,4 @@
- <footer class="page-footer light-blue lighten-1">
+ <footer class="page-footer light-blue lighten-1 footer">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
@@ -38,6 +38,7 @@
   <script src="../resources/js/jquery-2.1.1.min.js"></script>
   <script src="../resources/js/materialize.js"></script>
   <script src="../resources/js/init.js"></script>
-
+  <script src="../resources/js/jquery.dataTables.min.js" type="text/javascript"></script>  
+  <script src="../resources/js/appScript.js" type="text/javascript"></script>
   </body>
 </html>

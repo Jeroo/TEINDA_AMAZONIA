@@ -11,7 +11,7 @@
       $usuario = mysqli_real_escape_string($mysqli,$_POST['usuario']);
       $clave = mysqli_real_escape_string($mysqli,$_POST['clave']); 
       
-      $sql = "SELECT id FROM tiendalibros.usuarios WHERE usuario = '$usuario' and clave = '$clave'";
+      $sql = "SELECT id FROM usuarios WHERE usuario = '$usuario' and clave = '$clave'";
       $result = mysqli_query($mysqli,$sql);
       $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
      // $active = $row['active'];
@@ -24,7 +24,7 @@
          //session_register("usuario");
          $_SESSION['login_user'] = $usuario;
          
-         header("location: ../vistas/tienda.php");
+         header("location: ../vistas/administracion.php");
          
       }else {
          header("location: ../vistas/login.php");

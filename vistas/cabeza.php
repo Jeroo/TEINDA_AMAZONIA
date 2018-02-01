@@ -8,11 +8,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="../resources/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="../resources/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="../resources/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
   <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container">
-        <a id="logo-container" href="index.php" class="brand-logo">AMAZONIA</a>
+        <a id="logo-container" href="../index.php" class="brand-logo">AMAZONIA</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="#">Usuario</a></li>
         <li><a href="#"><i class="material-icons">shopping_cart</i></a></li>

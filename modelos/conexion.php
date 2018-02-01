@@ -2,7 +2,7 @@
 
     // Conectarse a y seleccionar una base de datos de MySQL llamada sakila
     // Nombre de host: 127.0.0.1, nombre de usuario: tu_usuario, contraseña: tu_contraseña, bd: sakila
-    $mysqli = new mysqli('127.0.0.1', 'root', '', 'tiendalibros');
+    $mysqli = new mysqli('127.0.0.1', 'root', '', 'tiendadb');
 
     
     
@@ -23,7 +23,7 @@ if ($mysqli->connect_errno) {
 }
 
 // Realizar una consulta SQL
-$sql = "SELECT * FROM tiendalibros.libros;";
+$sql = "SELECT * FROM libros;";
 if (!$resultado = $mysqli->query($sql)) {
     // ¡Oh, no! La consulta falló. 
     echo "Lo sentimos, este sitio web está experimentando problemas.";

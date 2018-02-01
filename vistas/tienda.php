@@ -1,6 +1,6 @@
    <?php
     
-        include 'cabeza.php';
+        require_once './cabeza.php';
     ?>
 
 
@@ -44,5 +44,5 @@
      
     <?php
     
-        include 'pie.php';
+        require_once './pie.php';
     ?>
