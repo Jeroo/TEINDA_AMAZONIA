@@ -23,7 +23,7 @@ if ($mysqli->connect_errno) {
 }
 
 // Realizar una consulta SQL
-$sql = "SELECT * FROM libros;";
+/*$sql = "SELECT * FROM libros;";
 if (!$resultado = $mysqli->query($sql)) {
     // ¡Oh, no! La consulta falló. 
     echo "Lo sentimos, este sitio web está experimentando problemas.";
@@ -42,12 +42,29 @@ if ($resultado->num_rows === 0) {
   
     echo "Lo sentimos. No se pudo encontrar una coincidencia  Inténtelo de nuevo.";
     exit;
-}
+}*/
 
 // Ahora, sabemos que existe solamente un único resultado en este ejemplo, por lo
 // que vamos a colocarlo en un array asociativo donde las claves del mismo son los
 // nombres de las columnas de la tabla
 /*$libro = $resultado->fetch_assoc();
 echo "A veces veo a " . $libro ['Titulo'] . " " . $libro ['Autor'] . " en la TV.";*/
+
+    //Alternative Image Saving Using cURL seeing as allow_url_fopen is disabled - bummer
+     function save_image($img,$fullpath){
+         
+             $ch = curl_init ($img);
+             curl_setopt($ch, CURLOPT_HEADER, 0);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+             curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+             $rawdata=curl_exec($ch);
+             curl_close ($ch);
+             if(file_exists($fullpath)){
+                     unlink($fullpath);
+             }
+             $fp = fopen($fullpath,'x');
+             fwrite($fp, $rawdata);
+             fclose($fp); 
+     }
 
 ?>

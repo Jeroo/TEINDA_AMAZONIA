@@ -9,7 +9,7 @@
    
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       // username and password sent from form 
-      
+   
       $usuario = mysqli_real_escape_string($mysqli,$_POST['usuario']);
       $clave = mysqli_real_escape_string($mysqli,$_POST['clave']); 
       
@@ -29,7 +29,8 @@
          header("location: ../vistas/administracion.php");
          
       }else {
-         header("location: ../vistas/login.php");
+         echo("<script>javascript:alert('usuario o contraseña incorrectos');window.location='../vistas/login.php';</script>");
+        // header("location: ../vistas/login.php");
       }
       
        

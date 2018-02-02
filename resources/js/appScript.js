@@ -10,4 +10,40 @@ $(document).ready(function() {
     },
     );
     
+    $('select').material_select();
+    
+    $('select').on('change', function() {
+        
+        var id = this.id;
+        
+        if (id == "stlformato") {
+            
+            $('#formato').val(this.value);
+            
+        }else if (id == "stlcategoria") {
+            
+             $('#categoria').val(this.value);
+        }
+        
+     });
+     
+     
+     $('#btnGuardar').click(function(){
+         //alert($('#recomendado').val())
+         var checkbox = document.getElementById('chkrecomendado');        
+        
+          if (checkbox.checked) {
+             
+             $('#recomendado').val(1);
+             
+           }else {
+            
+             $('#recomendado').val(0);
+          }
+
+         $('form#formAgregar').submit();
+    
+     });
+     
+    
 } );

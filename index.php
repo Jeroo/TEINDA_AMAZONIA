@@ -28,7 +28,7 @@
        
          if (!isset($_SESSION['login_user'])) { //not logged in
 
-                 echo "<li><a href='#'><i class='material-icons'>account_circle</i></a></li>";
+                 echo "<li><a href='./vistas/login.php'><i class='material-icons'>account_circle</i></a></li>";
 
             }else {
                 
@@ -39,6 +39,18 @@
        ?>
        
         <li><a href="#"><i class="material-icons">shopping_cart</i></a></li>
+         <?php
+       
+         if (isset($_SESSION['countCarrito'])) { //not logged in
+
+                 echo "<li><a href='carrito.php'><div class='numberCircle'>".(int)$_SESSION['countCarrito']."</div></a></li>";
+
+            }else {
+                
+                echo "<li><a href='carrito.php'><div class='numberCircle'>0</div></a></li>";
+
+            }
+       ?>
         <li><a href="./controladores/ControladorLogOut.php"><i class="material-icons">exit_to_app</i></a></li>
       
         

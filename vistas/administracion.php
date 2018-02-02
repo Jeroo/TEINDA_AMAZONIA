@@ -45,6 +45,7 @@
             <table id="listaLibros" cellspacing="0" width="100%" class="striped highlight centered responsive-table display">
                 <thead>
                   <tr>
+                      <th>Portada</th>
                       <th>Id</th>
                       <th>Título</th>
                       <th>Autor</th>
@@ -53,6 +54,7 @@
                       <th>Formato</th>
                       <th>Categoria</th>
                       <th>Precio</th>
+                      <th>Libro Recomendado</th>
                       <th>Cantidad Stock</th>
                       <th>Acciones</th>
                   </tr>
@@ -61,7 +63,7 @@
                 <tbody>
                 <?php
                   
-                  $sql = "SELECT l.id, f.formato,c.categoria,l.titulo,l.autor,l.editorial,l.aniopublicacion,l.precio,l.cantidadstock FROM libros l left join categorias c on c.id=l.idcategoria left join formatos f on f.id=l.idformato;";
+                  $sql = "SELECT l.id, f.formato,c.categoria,l.titulo,l.autor,l.editorial,l.aniopublicacion,l.precio,l.cantidadstock,l.librorecomendado  FROM libros l left join categorias c on c.id=l.idcategoria left join formatos f on f.id=l.idformato;";
                   $resultado = mysqli_query($mysqli,$sql);
                   
                   if($resultado)
@@ -71,6 +73,7 @@
                         {
 
                            echo '<tr><td align="left">' .
+                                    "<img src=\"../resources/img/$row[id].jpg\" alt=\"Portada del libro $row[titulo]\" height='80' width='80'></td><td align='left'>" .
                                     $row['id'] . '</td><td align="left">' .
                                     $row['titulo'].  '</td><td align="left">' .
                                     $row['autor'] . '</td><td align="left">'.
@@ -79,6 +82,7 @@
                                     $row['formato'].  '</td><td align="left">'.
                                     $row['categoria'].  '</td><td align="left">'.
                                     $row['precio'].  '</td><td align="left">'.
+                                    ($row['librorecomendado'] == 1 ? "Sí" : "No").  '</td><td align="left">'.
                                     $row['cantidadstock']. 
                                     "<td><a href=\"modificar.php?id=$row[id]\">Modificar</a> | <a href=\"../controladores/ControladorBorrar.php?id=$row[id]\" onClick=\"return confirm('Esta seguro que quiere borrar este libro?')\">Borrar</a></td>"
                                    ;

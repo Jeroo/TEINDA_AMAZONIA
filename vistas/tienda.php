@@ -1,6 +1,11 @@
    <?php
     
         require_once './cabeza.php';
+        require_once '../modelos/conexion.php';
+        
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
     ?>
 
 
@@ -9,31 +14,115 @@
 
       <!--   Icon Section   -->
       <div class="row">
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Speeds up development</h5>
+        <div class="col s12 m12 l12 xl12">
+         <table>
+             <thead>
+                  <tr>
+                      <th>Listado de Libros en Venta</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  
+                    <?php
+                  
+                  $sql = "SELECT l.id, f.formato,c.categoria,l.titulo,l.autor,l.editorial,l.aniopublicacion,l.precio,l.cantidadstock,l.librorecomendado  FROM libros l left join categorias c on c.id=l.idcategoria left join formatos f on f.id=l.idformato where l.cantidadstock > 0 order by l.librorecomendado desc;";
+                  $resultado = mysqli_query($mysqli,$sql);
+                  
+                  if($resultado)
+                    {
 
-            <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
-          </div>
-        </div>
+                       while($row = mysqli_fetch_array($resultado))
+                        {
+                           if ($row['librorecomendado'] == 1) {
+                               
+                               
+                                echo '<tr><td><div class="card" style="width: 80%;height: 100%">' .
+                                    "<div class='parent card-image waves-effect waves-block waves-light'><img src=\"../resources/img/$row[id].jpg\" alt=\"Portada del libro $row[titulo]\" style='width: 30%;height: 20%'><h4 class='ribbon'>Recomendado</h4></div>" .
+                                    "<div class='card-content'><span class='card-title activator grey-text text-darken-4'><b>Título: </b>$row[titulo]  <b> Precio: </b>$row[precio]<i class='material-icons right'>more_vert</i></span><p><a href='../controladores/ControladorCarrito.php?id=$row[id]' class='waves-effect waves-light btn'>Comprar</a></p></div>".
+                                    "<div class='card-reveal'>".
+                                    "<span class='card-title grey-text text-darken-4'>$row[titulo]<i class='material-icons right'>close</i></span>".
+                                    "<img src=\"../resources/img/$row[id].jpg\" alt=\"Portada del libro $row[titulo]\" style='width: 30%;height: 30%'>".
+                                    "<p><b>Título:</b> $row[titulo]</p>".
+                                    "<p><b>Autor:</b> $row[autor]</p>".
+                                    "<p><b>Categoria:</b> $row[categoria]</p>".
+                                    "<p><b>Formato:</b> $row[formato]</p>".
+                                    "<p><b>Editorial:</b> $row[editorial]</p>".
+                                    "<p><b>Precio:</b> $row[precio]</p>".
+                                    "<p><b>Cantidad Disponible:</b> $row[cantidadstock]</p>".
+                                    "<p><b>Año Públicación:</b> $row[aniopublicacion]</p>".
+                                    "<p><b>Libro Recomendado 10% de descuento</b></p>".
+                                    
+                                        
+                                        
+                                    "</div>"
+                            
+                                   
+                                       ;
 
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-            <h5 class="center">User Experience Focused</h5>
 
-            <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
-          </div>
-        </div>
+                                echo ' </div></td></tr>';
+                               
+                           } else {
+                               
+                                  echo '<tr><td><div class="card" style="width: 80%;height: 100%">' .
+                                    "<div class='card-image waves-effect waves-block waves-light'><img src=\"../resources/img/$row[id].jpg\" alt=\"Portada del libro $row[titulo]\" style='width: 30%;height: 20%'></div>" .
+                                    "<div class='card-content'><span class='card-title activator grey-text text-darken-4'><b>Título: </b>$row[titulo]  <b> Precio: </b>$row[precio]<i class='material-icons right'>more_vert</i></span><p><a href='../controladores/ControladorCarrito.php?id=$row[id]' class='waves-effect waves-light btn'>Comprar</a></p></div>".
+                                    "<div class='card-reveal'>".
+                                    "<span class='card-title grey-text text-darken-4'>$row[titulo]<i class='material-icons right'>close</i></span>".
+                                    "<img src=\"../resources/img/$row[id].jpg\" alt=\"Portada del libro $row[titulo]\" style='width: 30%;height: 30%'>".
+                                    "<p><b>Título:</b> $row[titulo]</p>".
+                                    "<p><b>Autor:</b> $row[autor]</p>".
+                                    "<p><b>Categoria:</b> $row[categoria]</p>".
+                                    "<p><b>Formato:</b> $row[formato]</p>".
+                                    "<p><b>Editorial:</b> $row[editorial]</p>".
+                                    "<p><b>Precio:</b> $row[precio]</p>".
+                                    "<p><b>Cantidad Disponible:</b> $row[cantidadstock]</p>".
+                                    "<p><b>Año Públicación:</b> $row[aniopublicacion]</p>".
+                                    
+                                        
+                                        
+                                    "</div>"
+                            
+                                   
+                                       ;
 
-        <div class="col s12 m4">
-          <div class="icon-block">
-            <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-            <h5 class="center">Easy to work with</h5>
 
-            <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
-          </div>
+                                echo ' </div></td></tr>';
+                           }
+                          
+                        }
+
+                      }
+                    else
+                    {
+                        echo "no se puedo ejecutar la consulta hay un error en la base de datos<br />";
+                        echo mysqli_error($mysqli);
+                    }
+                    
+                      //mysql_close($mysqli);
+                 ?>                         
+                
+                  <!--tr>
+                      <td>
+                            <div class="card" style="width: 80%;height: 100%">
+                                
+                                <div class="card-image waves-effect waves-block waves-light">
+                                  <img src="../resources/img/10.jpg" alt="" style="width: 30%;height: 20%"/>
+                                </div>
+                                <div class="card-content"><span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span><p><a href="#">Comprar</a></p></div>
+                                <div class="card-reveal">
+                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
+                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                                </div>
+                            </div>
+                      </td>
+                  </tr-->
+                 
+                  
+              </tbody>
+       
+             
+         </table>
         </div>
       </div>
 

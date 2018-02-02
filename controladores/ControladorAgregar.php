@@ -10,36 +10,140 @@
    if($_SERVER["REQUEST_METHOD"] == "POST") {
       // username and password sent from form 
       
-      $usuario = mysqli_real_escape_string($mysqli,$_POST['usuario']);
-      $clave = mysqli_real_escape_string($mysqli,$_POST['clave']); 
+      $titulo = mysqli_real_escape_string($mysqli,$_POST['titulo']);
+      $autor = mysqli_real_escape_string($mysqli,$_POST['autor']);
+      $editorial= mysqli_real_escape_string($mysqli,$_POST['editorial']);
+      $precio = mysqli_real_escape_string($mysqli,$_POST['precio']);
+      $cantidad = mysqli_real_escape_string($mysqli,$_POST['cantidad']);
+      $anioPublicacion= mysqli_real_escape_string($mysqli,$_POST['anioPublicacion']);
+      $categoria = mysqli_real_escape_string($mysqli,$_POST['categoria']);
+      $formato = mysqli_real_escape_string($mysqli,$_POST['formato']);
+      $recomendado = empty(mysqli_real_escape_string($mysqli,$_POST['recomendado'])) ? 0 : mysqli_real_escape_string($mysqli,$_POST['recomendado']);
       
       // checking empty fields
-	if(empty($name) || empty($age) || empty($email)) {
+	
+      if(empty($titulo) || empty($autor) || empty($editorial) || empty($precio) 
+                || empty($cantidad) || empty($anioPublicacion) || empty($categoria) || empty($formato)) 
+          
+          {
 				
-		if(empty($name)) {
+		if(empty($titulo)) {
                     
-                   echo "<font color='red'>Name field is empty.</font><br/>";
+                   echo "<font color='red'>El titulo no puede estar en blanco.</font><br/>";
 		}
 		
-		if(empty($age)) {
-			echo "<font color='red'>Age field is empty.</font><br/>";
+		if(empty($autor)) {
+                    
+                   echo "<font color='red'>El autor no puede estar en blanco.</font><br/>";
 		}
-		
-		if(empty($email)) {
-			echo "<font color='red'>Email field is empty.</font><br/>";
+                
+                if(empty($editorial)) {
+                    
+                   echo "<font color='red'>La editorial no puede estar en blanco.</font><br/>";
+		}
+                
+                if(empty($precio)) {
+                    
+                   echo "<font color='red'>El precio no puede estar en blanco.</font><br/>";
+		}
+                
+                 if(empty($cantidad)) {
+                    
+                   echo "<font color='red'>El cantidad no puede estar en blanco.</font><br/>";
+		}
+                
+                 if(empty($anioPublicacion)) {
+                    
+                   echo "<font color='red'>El Año Publicación no puede estar en blanco.</font><br/>";
+		}
+                
+                 if(empty($categoria)) {
+                    
+                   echo "<font color='red'>La categoria no puede estar en blanco.</font><br/>";
+		}
+                
+                 if(empty($formato)) {
+                    
+                   echo "<font color='red'>El formato no puede estar en blanco.</font><br/>";
 		}
 		
 		//link to the previous page
-		echo "<br/><a href='javascript:self.history.back();'>Go Back</a>";
+		echo "<br/><a href='javascript:self.history.back();'>Volver</a>";
+                
 	} else { 
-		// if all the fields are filled (not empty) 
-			
-		//insert data to database	
-		$result = mysqli_query($mysqli, "INSERT INTO users(name,age,email) VALUES('$name','$age','$email')");
+            
+                               
+		$filename = $_FILES["fichero_portada"]["name"];
+                $file_basename = substr($filename, 0, strripos($filename, '.')); // get file extention
+                $file_ext = substr($filename, strripos($filename, '.')); // get file name
+                $filesize = $_FILES["fichero_portada"]["size"];
+                $allowed_file_types = array('.png','.jpg','.jpeg');
+                $dir_subida = '../resources/img/';
+                if (in_array($file_ext,$allowed_file_types) && ($filesize < 200000))
+	        {
+                   
+                    $result = mysqli_query($mysqli, "INSERT INTO libros"
+                            . "(Titulo,Autor,Editorial,anioPublicacion,Precio,CantidadStock,librorecomendado,idCategoria,idFormato) "
+                            . "VALUES('$titulo','$autor','$editorial','$anioPublicacion','$precio','$cantidad','$recomendado','$categoria','$formato')");
+                 
+                    $resultado = mysqli_query($mysqli, "select max(id) as id from libros");
+
+                    if($resultado)
+                    {
+
+                        while($row = mysqli_fetch_array($resultado))
+                        {
+
+                            $id = $row['id'];
+                        }
+
+
+                     }
+		
+                 if ($recomendado==1) {
+                        
+                        $result = mysqli_query($mysqli, "UPDATE libros SET "
+                        . "librorecomendado='0'"
+                        . " WHERE id<>$id");
+                    }
+
+                $newfilename = $id . ".jpg";
+		if (file_exists($dir_subida . $newfilename))
+		{
+			move_uploaded_file($_FILES["fichero_portada"]["tmp_name"], $dir_subida. $newfilename);
+			echo "File uploaded successfully.";
+		}
+		else
+		{		
+			move_uploaded_file($_FILES["fichero_portada"]["tmp_name"], $dir_subida. $newfilename);
+			echo "File uploaded successfully.";		
+		}
+                }
+                elseif (empty($file_basename))
+                {	
+                        // file selection error
+                       echo("<script>javascript:alert('Seleccione la imagen');window.location='#';</script>");
+
+                } 
+                elseif ($filesize > 200000)
+                {	
+                        // file size error
+                        echo "The file you are trying to upload is too large.";
+                }
+                else
+                {
+                        // file type error
+                        echo "Only these file typs are allowed for upload: " . implode(', ',$allowed_file_types);
+                        unlink($_FILES["file"]["tmp_name"]);
+                }
+            
+            
 		
 		//display success message
-		echo "<font color='green'>Data added successfully.";
-		echo "<br/><a href='index.php'>View Result</a>";
+                echo("<script>javascript:alert('Datos agregados correctamente!');window.location='../vistas/administracion.php';</script>");
+		
+		//echo "<br/><a href='index.php'>View Result</a>";
+                //header("location: ../vistas/administracion.php");
 	}
       
        
